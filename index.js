@@ -9,14 +9,18 @@ document.addEventListener("DOMContentLoaded", function () {
         .then(response => response.json());
     }
 
-    // Function to populate the movie menu
+    // Function to populate the movie menu with cards
     function populateMovieMenu(movies) {
         filmsList.innerHTML = "";
         movies.forEach(movie => {
-            const li = document.createElement("li");
-            li.textContent = movie.title;
-            li.addEventListener("click", () => showMovieDetails(movie.id));
-            filmsList.appendChild(li);
+            const card = document.createElement("div");
+            card.classList.add("movie-card");
+            card.innerHTML = `
+                <img class="movie-image" src="${movie.poster}" alt="${movie.title} Poster">
+                <h2 class="movie-title">${movie.title}</h2>
+            `;
+            card.addEventListener("click", () => showMovieDetails(movie.id));
+            filmsList.appendChild(card);
         });
     }
 
@@ -41,8 +45,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Function to handle "Buy Ticket" button click
     function buyTicket(movieId, availableTickets) {
         if (availableTickets > 0) {
-            // Here, you can implement the ticket purchase logic
-            // For this example, we'll just display a message
+            // we'll just display a message
             alert("Ticket purchased successfully!");
             // Update the available tickets on the frontend
             const ticketElement = movieDetails.querySelector("p:last-child");
@@ -56,7 +59,8 @@ document.addEventListener("DOMContentLoaded", function () {
     function init() {
         const moviesUrl = `${baseUrl}/films`;
         fetchMovieData(moviesUrl).then(populateMovieMenu);
-        showMovieDetails(1); // Show details of the first movie initially
+        // Show details of the first movie initially
+        showMovieDetails(1); 
     }
 
     init();
